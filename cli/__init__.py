@@ -1,0 +1,1 @@
+"""DocKar command-line package."""
