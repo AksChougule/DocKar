@@ -137,6 +137,16 @@ PDF ingestion uses embedded text first and falls back to Tesseract OCR when page
 density is low. The Python OCR package is installed through Poetry; the `tesseract`
 system binary must also be available on the machine for OCR fallback to run.
 
+Chunk a loaded document:
+
+```python
+from dockar.chunking import Chunker
+
+chunks = Chunker(chunk_size=4000).chunk(document)
+print(chunks[0].chunk_id)
+print(chunks[0].page_range)
+```
+
 ## Development
 
 ```bash

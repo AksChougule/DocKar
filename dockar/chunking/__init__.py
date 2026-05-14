@@ -1,5 +1,6 @@
 """Document chunking boundary."""
 
-from dockar.chunking.interfaces import Chunker
+from dockar.chunking.fixed import Chunker, FixedSizeChunker
+from dockar.chunking.interfaces import ChunkingStrategy
 
-__all__ = ["Chunker"]
+__all__ = ["Chunker", "ChunkingStrategy", "FixedSizeChunker"]

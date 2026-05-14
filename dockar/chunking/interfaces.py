@@ -2,12 +2,12 @@
 
 from typing import Protocol
 
-from dockar.models import Document
+from dockar.models import Chunk, Document
 
 
-class Chunker(Protocol):
-    """Splits documents into model-sized chunks."""
+class ChunkingStrategy(Protocol):
+    """Strategy interface for splitting documents into chunks."""
 
-    def chunk(self, document: Document) -> list[str]:
+    def chunk(self, document: Document) -> list[Chunk]:
         """Return ordered chunks for one document."""
         ...

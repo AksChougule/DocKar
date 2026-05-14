@@ -1,5 +1,11 @@
 """Shared domain models."""
 
-from dockar.models.document import Document, DocumentPage, ExtractedDocument, ExtractionResult
+from dockar.models.document import (
+    Chunk,
+    Document,
+    DocumentPage,
+    ExtractedDocument,
+    ExtractionResult,
+)
 
-__all__ = ["Document", "DocumentPage", "ExtractedDocument", "ExtractionResult"]
+__all__ = ["Chunk", "Document", "DocumentPage", "ExtractedDocument", "ExtractionResult"]

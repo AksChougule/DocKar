@@ -31,6 +31,15 @@ class Document(BaseModel):
         return self.raw_text
 
 
+class Chunk(BaseModel):
+    """Text chunk with provenance back to the source document."""
+
+    chunk_id: str
+    text: str
+    document_id: str
+    page_range: tuple[int, int] | None = None
+
+
 class ExtractedDocument(BaseModel):
     """Structured output produced for a document."""
 
