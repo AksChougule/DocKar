@@ -1,10 +1,16 @@
 project_name: DocKar
 
 model:
+  provider: openai
   default_model: gpt-4o-mini
   fallback_model: gpt-4o
   temperature: 0.0
   max_tokens: 4096
+  timeout_seconds: 60
+  max_retries: 2
+  openai_api_key:
+  openai_base_url: https://api.openai.com/v1
+  ollama_base_url: http://localhost:11434
 
 loop:
   max_iterations: 20

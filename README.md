@@ -50,10 +50,16 @@ for a complete example.
 project_name: DocKar
 
 model:
+  provider: openai
   default_model: gpt-4o-mini
   fallback_model: gpt-4o
   temperature: 0.0
   max_tokens: 4096
+  timeout_seconds: 60
+  max_retries: 2
+  openai_api_key:
+  openai_base_url: https://api.openai.com/v1
+  ollama_base_url: http://localhost:11434
 
 loop:
   max_iterations: 20
@@ -146,6 +152,22 @@ chunks = Chunker(chunk_size=4000).chunk(document)
 print(chunks[0].chunk_id)
 print(chunks[0].page_range)
 ```
+
+Generate with the LLM router:
+
+```python
+from dockar.config import ConfigLoader
+from dockar.execution import RouterClient
+
+config = ConfigLoader().load("config/default.yaml")
+router = RouterClient.from_model_config(config.model)
+response = router.generate("Extract invoice fields as JSON.")
+print(response.text)
+print(response.cost_usd, response.latency_ms)
+```
+
+For OpenAI, set `OPENAI_API_KEY` or `model.openai_api_key`. For Ollama, set
+`model.provider: ollama` and point `model.ollama_base_url` at the local server.
 
 ## Development
 

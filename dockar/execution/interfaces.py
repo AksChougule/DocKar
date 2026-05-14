@@ -2,8 +2,16 @@
 
 from typing import Protocol
 
-from dockar.models import Document, ExtractionResult
+from dockar.models import Document, ExtractionResult, LLMRequestConfig, LLMResponse
 from dockar.prompt_engine import PromptCandidate
+
+
+class LLMClient(Protocol):
+    """Provider-neutral LLM generation client."""
+
+    def generate(self, prompt: str, config: LLMRequestConfig) -> LLMResponse:
+        """Generate a completion for a prompt."""
+        ...
 
 
 class ExtractionExecutor(Protocol):

@@ -9,10 +9,16 @@ from pydantic import BaseModel, ConfigDict, Field, PositiveInt, field_validator,
 class ModelConfig(BaseModel):
     """LLM provider and model settings."""
 
+    provider: str = Field(default="openai", pattern="^(openai|ollama)$")
     default_model: str = Field(default="gpt-4o-mini", min_length=1)
     fallback_model: str = Field(default="gpt-4o", min_length=1)
     temperature: float = Field(default=0.0, ge=0.0, le=2.0)
     max_tokens: PositiveInt = 4096
+    timeout_seconds: float = Field(default=60.0, gt=0)
+    max_retries: int = Field(default=2, ge=0)
+    openai_api_key: str | None = None
+    openai_base_url: str = "https://api.openai.com/v1"
+    ollama_base_url: str = "http://localhost:11434"
 
 
 class LoopConfig(BaseModel):
