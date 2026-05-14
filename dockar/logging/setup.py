@@ -13,7 +13,7 @@ def configure_logging(config: LoggingConfig | None = None) -> None:
 
     logging_config = config or LoggingConfig()
     logging.basicConfig(
-        level=getattr(logging, logging_config.level.upper(), logging.INFO),
+        level=getattr(logging, logging_config.log_level, logging.INFO),
         format="%(message)s",
         stream=sys.stdout,
     )
@@ -25,16 +25,12 @@ def configure_logging(config: LoggingConfig | None = None) -> None:
         structlog.processors.StackInfoRenderer(),
         structlog.processors.format_exc_info,
     ]
-    processors.append(
-        structlog.processors.JSONRenderer()
-        if logging_config.json_logs
-        else structlog.dev.ConsoleRenderer()
-    )
+    processors.append(structlog.processors.JSONRenderer())
 
     structlog.configure(
         processors=processors,
         wrapper_class=structlog.make_filtering_bound_logger(
-            getattr(logging, logging_config.level.upper(), logging.INFO)
+            getattr(logging, logging_config.log_level, logging.INFO)
         ),
         logger_factory=structlog.PrintLoggerFactory(),
         cache_logger_on_first_use=True,

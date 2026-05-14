@@ -1,0 +1,35 @@
+project_name: DocKar
+
+model:
+  default_model: gpt-4o-mini
+  fallback_model: gpt-4o
+  temperature: 0.0
+  max_tokens: 4096
+
+loop:
+  max_iterations: 20
+  budget_usd: 10.0
+  early_stopping_rounds: 3
+  candidates_per_iteration: 4
+  top_k: 2
+
+evaluation:
+  weights:
+    accuracy: 0.8
+    cost: 0.1
+    latency: 0.1
+  field_scoring:
+    enabled: true
+    exact_match_fields: []
+    semantic_fields: []
+    numeric_tolerance: 0.0
+    per_field_weights: {}
+
+ingestion:
+  ocr_enabled: true
+  chunk_size: 4000
+  max_doc_pages: 100
+
+logging:
+  log_level: INFO
+  output_dir: ./runs/logs

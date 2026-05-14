@@ -5,7 +5,7 @@ from typing import Annotated
 
 import typer
 
-from dockar.config import DocKarConfig, load_config
+from dockar.config import ConfigError, DocKarConfig, load_config
 from dockar.logging import configure_logging
 
 app = typer.Typer(help="DocKar document extraction toolkit.")
@@ -22,7 +22,11 @@ def config_check(
 ) -> None:
     """Validate a DocKar YAML configuration file."""
 
-    dockar_config = load_config(config)
+    try:
+        dockar_config = load_config(config)
+    except ConfigError as exc:
+        raise typer.BadParameter(str(exc), param_hint="config") from exc
+
     configure_logging(dockar_config.logging)
     typer.echo(dockar_config.model_dump_json(indent=2))
 
@@ -57,14 +61,15 @@ def run(
     validates inputs and resolves effective configuration.
     """
 
-    dockar_config = load_config(config) if config else DocKarConfig()
-    if budget is not None:
-        dockar_config.budget.max_cost_usd = budget
-    if iterations is not None:
-        dockar_config.budget.max_iterations = iterations
+    try:
+        dockar_config = load_config(config) if config else DocKarConfig()
+    except ConfigError as exc:
+        raise typer.BadParameter(str(exc), param_hint="--config") from exc
 
-    dockar_config.execution.docs_path = docs
-    dockar_config.execution.schema_path = schema
-    dockar_config.execution.labels_path = labels
+    if budget is not None:
+        dockar_config.loop.budget_usd = budget
+    if iterations is not None:
+        dockar_config.loop.max_iterations = iterations
+
     configure_logging(dockar_config.logging)
     typer.echo(dockar_config.model_dump_json(indent=2))

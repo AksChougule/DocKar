@@ -1,19 +1,27 @@
 """Configuration models and loaders."""
 
-from dockar.config.loader import load_config
+from dockar.config.loader import ConfigError, ConfigLoader, load_config
 from dockar.config.models import (
-    BudgetConfig,
     DocKarConfig,
-    ExecutionConfig,
+    EvaluationConfig,
+    EvaluationWeightsConfig,
+    FieldScoringConfig,
+    IngestionConfig,
     LoggingConfig,
+    LoopConfig,
     ModelConfig,
 )
 
 __all__ = [
-    "BudgetConfig",
+    "ConfigError",
+    "ConfigLoader",
     "DocKarConfig",
-    "ExecutionConfig",
+    "EvaluationConfig",
+    "EvaluationWeightsConfig",
+    "FieldScoringConfig",
+    "IngestionConfig",
     "LoggingConfig",
+    "LoopConfig",
     "ModelConfig",
     "load_config",
 ]

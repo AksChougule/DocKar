@@ -42,31 +42,57 @@ poetry install
 
 ## Configuration
 
-DocKar configuration is YAML-backed and validated with Pydantic.
+DocKar configuration is YAML-backed, validated with Pydantic, and supports
+environment overrides. See [config/default.yaml](/home/ubuntu/codebase/my_github/DocKar/config/default.yaml)
+for a complete example.
 
 ```yaml
 project_name: DocKar
+
 model:
-  provider: openai
-  name: gpt-4o-mini
-  timeout_seconds: 60
-  max_retries: 2
-budget:
-  max_cost_usd: 10
+  default_model: gpt-4o-mini
+  fallback_model: gpt-4o
+  temperature: 0.0
+  max_tokens: 4096
+
+loop:
   max_iterations: 20
+  budget_usd: 10.0
   early_stopping_rounds: 3
-execution:
-  docs_path: ./docs
-  schema_path: ./schema.json
-  labels_path: ./labels.json
-  runs_path: ./runs
+  candidates_per_iteration: 4
+  top_k: 2
+
+evaluation:
+  weights:
+    accuracy: 0.8
+    cost: 0.1
+    latency: 0.1
+  field_scoring:
+    enabled: true
+    exact_match_fields: []
+    semantic_fields: []
+    numeric_tolerance: 0.0
+    per_field_weights: {}
+
+ingestion:
+  ocr_enabled: true
   chunk_size: 4000
+  max_doc_pages: 100
+
 logging:
-  level: INFO
-  json: true
+  log_level: INFO
+  output_dir: ./runs/logs
 ```
 
-Relative paths under `execution` are resolved relative to the YAML file.
+Relative `logging.output_dir` paths are resolved relative to the YAML file.
+
+Environment overrides use the `DOCKAR__` prefix and `__` nested delimiter:
+
+```bash
+DOCKAR__MODEL__DEFAULT_MODEL=gpt-4o poetry run dockar config-check config/default.yaml
+DOCKAR__LOOP__BUDGET_USD=25 poetry run dockar config-check config/default.yaml
+DOCKAR__INGESTION__OCR_ENABLED=false poetry run dockar config-check config/default.yaml
+```
 
 ## CLI
 
@@ -90,9 +116,9 @@ poetry run dockar run \
 ## SDK
 
 ```python
-from dockar import load_config
+from dockar.config import ConfigLoader
 
-config = load_config("dockar.yaml")
+config = ConfigLoader().load("config/default.yaml")
 ```
 
 ## Development
