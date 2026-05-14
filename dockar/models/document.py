@@ -6,13 +6,29 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 
+class DocumentPage(BaseModel):
+    """Page-level content extracted from a source document."""
+
+    page_number: int = Field(ge=1)
+    raw_text: str = ""
+    extraction_method: str = "text"
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
 class Document(BaseModel):
-    """Input document metadata and text payload."""
+    """Input document with full and page-level text payloads."""
 
     id: str
     source_path: Path
-    text: str | None = None
+    raw_text: str = ""
+    pages: list[DocumentPage] = Field(default_factory=list)
     metadata: dict[str, Any] = Field(default_factory=dict)
+
+    @property
+    def text(self) -> str:
+        """Backward-compatible alias for raw document text."""
+
+        return self.raw_text
 
 
 class ExtractedDocument(BaseModel):

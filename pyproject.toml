@@ -16,6 +16,9 @@ pyyaml = "^6.0.1"
 typer = { version = "^0.12.3", extras = ["all"] }
 httpx = "^0.27.0"
 structlog = "^24.1.0"
+pymupdf = "^1.24.5"
+pytesseract = "^0.3.10"
+pillow = "^10.3.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"

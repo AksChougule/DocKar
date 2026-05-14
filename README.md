@@ -121,6 +121,22 @@ from dockar.config import ConfigLoader
 config = ConfigLoader().load("config/default.yaml")
 ```
 
+Load a PDF document:
+
+```python
+from pathlib import Path
+
+from dockar.ingestion import DocumentLoader
+
+document = DocumentLoader().load(Path("examples/invoice.pdf"))
+print(document.raw_text)
+print(document.pages[0].extraction_method)
+```
+
+PDF ingestion uses embedded text first and falls back to Tesseract OCR when page text
+density is low. The Python OCR package is installed through Poetry; the `tesseract`
+system binary must also be available on the machine for OCR fallback to run.
+
 ## Development
 
 ```bash

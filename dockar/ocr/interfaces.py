@@ -2,12 +2,12 @@
 
 from typing import Protocol
 
-from dockar.models import Document
+from dockar.models import DocumentPage
 
 
 class OcrEngine(Protocol):
     """Extracts text from scanned documents."""
 
-    def extract_text(self, document: Document) -> Document:
-        """Return a document with text populated."""
+    def extract_pages(self, pages: list[DocumentPage]) -> list[DocumentPage]:
+        """Return OCR-populated pages."""
         ...
