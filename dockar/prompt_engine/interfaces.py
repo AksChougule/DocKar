@@ -1,4 +1,4 @@
-"""Interfaces for prompt generation and mutation."""
+"""Interfaces and models for prompt generation and mutation."""
 
 from typing import Any, Protocol
 
@@ -13,10 +13,24 @@ class PromptCandidate(BaseModel):
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
+class PromptInputs(BaseModel):
+    """Inputs used to build extraction prompts."""
+
+    task_description: str = Field(min_length=1)
+    output_schema: dict[str, Any] = Field(alias="schema")
+    examples: list[dict[str, Any]] = Field(default_factory=list, max_length=3)
+
+
 class PromptEngine(Protocol):
     """Creates and refines prompt candidates."""
 
-    def generate(self, task_description: str, schema: dict[str, Any]) -> list[PromptCandidate]:
+    def generate(
+        self,
+        task_description: str,
+        schema: dict[str, Any],
+        examples: list[dict[str, Any]] | None = None,
+        candidate_count: int = 1,
+    ) -> list[PromptCandidate]:
         """Generate initial prompts."""
         ...
 

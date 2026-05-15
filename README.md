@@ -169,6 +169,23 @@ print(response.cost_usd, response.latency_ms)
 For OpenAI, set `OPENAI_API_KEY` or `model.openai_api_key`. For Ollama, set
 `model.provider: ollama` and point `model.ollama_base_url` at the local server.
 
+Generate extraction prompt candidates:
+
+```python
+from dockar.prompt_engine import PromptGenerator
+
+schema = {"type": "object", "properties": {"invoice_id": {"type": "string"}}}
+examples = [{"invoice_id": "INV-001"}]
+
+candidates = PromptGenerator(deterministic=True).generate(
+    task_description="Extract invoice fields.",
+    schema=schema,
+    examples=examples,
+    candidate_count=4,
+)
+print(candidates[0].text)
+```
+
 ## Development
 
 ```bash
