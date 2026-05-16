@@ -186,6 +186,19 @@ candidates = PromptGenerator(deterministic=True).generate(
 print(candidates[0].text)
 ```
 
+Execute extraction with an LLM client:
+
+```python
+from dockar.execution import Executor, RouterClient
+
+router = RouterClient.from_model_config(config.model)
+result = Executor(router).execute_document(document, candidates[0])
+
+print(result.output.data if result.output else result.error)
+print(result.raw_outputs)
+print(result.metadata)
+```
+
 ## Development
 
 ```bash

@@ -52,7 +52,11 @@ class ExtractionResult(BaseModel):
     """Execution result with observability metadata."""
 
     document_id: str
+    chunk_id: str | None = None
     output: ExtractedDocument | None = None
     error: str | None = None
     latency_ms: float | None = None
     cost_usd: float | None = None
+    raw_outputs: list[str] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
+    metadata: dict[str, Any] = Field(default_factory=dict)
