@@ -199,6 +199,16 @@ print(result.raw_outputs)
 print(result.metadata)
 ```
 
+Post-process an extraction:
+
+```python
+from dockar.postprocessing import PostProcessor
+
+processed = PostProcessor().process(result.output, schema)
+print(processed.data)
+print(processed.metadata["postprocessing"]["fixes"])
+```
+
 ## Development
 
 ```bash

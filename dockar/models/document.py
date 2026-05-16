@@ -46,6 +46,7 @@ class ExtractedDocument(BaseModel):
     document_id: str
     data: dict[str, Any]
     raw_output: str | None = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
 
 
 class ExtractionResult(BaseModel):
