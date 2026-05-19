@@ -209,6 +209,19 @@ print(processed.data)
 print(processed.metadata["postprocessing"]["fixes"])
 ```
 
+Evaluate extraction quality:
+
+```python
+from dockar.evaluation import Evaluator
+
+expected = {"invoice_id": "INV-001"}
+report = Evaluator(config=config.evaluation).evaluate(processed, expected)
+
+print(report.accuracy)
+print(report.cost, report.latency_ms)
+print(report.documents[0].field_scores)
+```
+
 ## Development
 
 ```bash
